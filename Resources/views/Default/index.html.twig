@@ -1,0 +1,43 @@
+{% extends '::base.html.twig' %}
+
+{% block content %}
+    Homepage.
+
+    <ul>
+        {% for post in posts %}
+            <li>
+                <div>Владелец: <b>{{ post.owner }}</b></div>
+                <div>Автор: <b>{{ post.author }}</b></div>
+                <div>Дата: <b>{{ post.createdAt|date('Y-m-d H:i') }}</b></div>
+                <div>Собрала лайков: <b>{{ post.likesCount }}</b></div>
+                {{ post.text|raw }}
+
+                {#<div>
+                    {{ dump(post.attachments) }}
+                </div>#}
+
+                <ul>
+                    {% for attachment in post.attachments if attachment != null %}
+                        <li>{{ attachment.toRichText()|raw }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for vkUser in vkUsers %}
+            <li>
+                {#<img src="{{ vkUser.photoMediumUrl }}" height="200"/>#}
+                <div>
+                    {{ vkUser }}
+                    {% if vkUser.online == true %}
+                        <span style="color: #02ab05; font-weight: bold;">ONLINE</span>
+                    {% else %}
+                        <span>OFFLINE</span>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

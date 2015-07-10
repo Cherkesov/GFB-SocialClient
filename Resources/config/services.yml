@@ -1,0 +1,12 @@
+services:
+    vk_client:
+        class: GFB\SocialClientBundle\Service\VkService
+        arguments: ~
+        calls:
+          - [setContainer, [@service_container]]
+          - [setRouter, [@router]]
+          - [setRequest, [@request]]
+
+    fb_client:
+        class: GFB\SocialClientBundle\Service\FbService
+        arguments: ~
