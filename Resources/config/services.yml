@@ -6,6 +6,7 @@ services:
           - [setContainer, [@service_container]]
           - [setRouter, [@router]]
           - [setRequest, [@request]]
+        scope: request
 
     fb_client:
         class: GFB\SocialClientBundle\Service\FbService

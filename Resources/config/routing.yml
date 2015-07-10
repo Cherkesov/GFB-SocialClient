@@ -1,11 +1,7 @@
 gfb_social_client_index:
-    path:     /
+    path:     /demo
     defaults: { _controller: GFBSocialClientBundle:Default:index }
-
-#gfb_social_client_vk_index:
-#    path:     /vk
-#    defaults: { _controller: GFBSocialClientBundle:Default:vk }
 
 gfb_social_client_vk_catch_code:
     path:     /vk/code
-    defaults: { _controller: GFBSocialClientBundle:Default:vkCatchCode }
+    defaults: { _controller: GFBSocialClientBundle:Social:vkCatchCode }
