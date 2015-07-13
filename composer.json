@@ -15,8 +15,7 @@
     "MIT"
   ],
   "require": {
-    "misd/guzzle-bundle": "1.1.5",
-    "php-instagram-api/php-instagram-api": "*@dev"
+    "misd/guzzle-bundle": "1.1.5"
   },
   "autoload": {
     "psr-0": {
