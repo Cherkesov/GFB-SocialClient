@@ -234,7 +234,9 @@ class VkService
         }
 
         $request = $this->client->get($method);
-        $context = array_merge($context, ["access_token" => $_COOKIE[self::VK_TOKEN_COOKIE]]);
+        $context = array_merge($context, array(
+            "access_token" => $_COOKIE[self::VK_TOKEN_COOKIE]
+        ));
         $query = $request->getQuery();
         foreach ($context as $key => $value) {
             $query->set($key, $value);
@@ -254,7 +256,7 @@ class VkService
 //        die;
 
         $arr = json_decode($data, true);
-        return isset($arr["response"]) ? $arr["response"] : [];
+        return isset($arr["response"]) ? $arr["response"] : array();
     }
 
     /**
