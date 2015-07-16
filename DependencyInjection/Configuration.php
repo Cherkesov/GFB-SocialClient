@@ -22,7 +22,7 @@ class Configuration implements ConfigurationInterface
 
         $rootNode
             ->children()
-                ->arrayNode('vk')
+                ->arrayNode('vkontakte')
                 ->children()
                     ->integerNode('client_id')->end()
                     ->scalarNode('client_secret')->end()
@@ -31,10 +31,17 @@ class Configuration implements ConfigurationInterface
                 ->end()
                 ->end()
                 //
-                ->arrayNode('fb')
+                ->arrayNode('facebook')
                 ->children()
                     ->scalarNode('app_id')->end()
                     ->scalarNode('app_secret')->end()
+                ->end()
+                ->end()
+                //
+                ->arrayNode('instagram')
+                ->children()
+                    ->scalarNode('client_id')->end()
+                    ->scalarNode('client_secret')->end()
                 ->end()
                 ->end()
             ->end();

@@ -9,37 +9,41 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
 {
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $vk = $this->get('vk_client');
+        $vkontakte = $this->get("vk_client");
+        $instagram = $this->get("ig_client");
+
 //        $data = $vk->usersGet(['nkmelanj', 'stemmuel', 'will_grymm', 'holodnyi_veter', 'dandrumkiller']);
 //        $data = $vk->friendsGet('199177108');
-        $groupMembers = $vk->groupsGetMembers('anastacia_koptiaeva');
+//        $groupMembers = $vk->groupsGetMembers('anastacia_koptiaeva');
 //        $data = $vk->usersSearch('Строгин Артем');
 
-        $posts = array();// $vk->wallGet('199177108');
+        $mediaList = array();
+        $igTag = $request->query->get("ig_tag");
+        if (!empty($igTag)) {
+            $mediaList = $instagram->getMediaListByTag($igTag);
+        }
 
-//        echo '<pre>';
-//        print_r($data);
-//        echo '</pre>';
-//        die;
+        $posts = array();
+        $vkUserId = $request->query->get("vk_user_id");
+        if (!empty($vkUserId)) {
+            $posts = $vkontakte->wallGet($vkUserId);
+        }
+
+        $groupMembers = array();
+        $vkGroupId = $request->query->get("vk_group_id");
+        if (!empty($vkGroupId)) {
+            $groupMembers = $vkontakte->groupsGetMembers($vkGroupId);
+        }
 
         return $this->render(
-            'GFBSocialClientBundle:Default:index.html.twig',
+            "GFBSocialClientBundle:Default:index.html.twig",
             array(
-                'vkUsers' => $groupMembers,
-                'posts' => $posts
+                "vkUsers" => $groupMembers,
+                "posts" => $posts,
+                "mediaList" => $mediaList,
             )
         );
     }
-
-    /*public function vkCatchCodeAction(Request $request)
-    {
-        $code = $request->query->get("code");
-        $this->get("vk_client")->getTokenByCodeAndSaveToCookies($code);
-
-        return $this->redirect(
-            $this->generateUrl("gfb_social_client_index")
-        );
-    }*/
 }

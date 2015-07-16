@@ -2,6 +2,10 @@ gfb_social_client_index:
     path:     /demo
     defaults: { _controller: GFBSocialClientBundle:Default:index }
 
-gfb_social_client_vk_catch_code:
-    path:     /vk/code
-    defaults: { _controller: GFBSocialClientBundle:Social:vkCatchCode }
+gfb_social_client_vkontakte_code:
+    path:     /vkontakte/code
+    defaults: { _controller: GFBSocialClientBundle:Social:vkontakteCode }
+
+gfb_social_client_instagram_code:
+    path:     /instagram/code
+    defaults: { _controller: GFBSocialClientBundle:Social:instagramCode }

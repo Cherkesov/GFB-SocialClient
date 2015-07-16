@@ -12,17 +12,12 @@ namespace GFB\SocialClientBundle\Service;
 use GFB\SocialClientBundle\Entity\Vk\Hydrator;
 use GFB\SocialClientBundle\Entity\Vk\Post;
 use GFB\SocialClientBundle\Entity\Vk\User;
-use Guzzle\Http\Client as GuzzleClient;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class VkService
+class VkService extends AbstractRestClient
 {
-    const VK_API_URL = "https://api.vk.com/method/";
     const VK_AUTHORIZE_URL = "https://oauth.vk.com/authorize";
     const VK_ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
-
-    /** @var GuzzleClient */
-    protected $client;
 
     /** @var Hydrator */
     protected $hydrator;
@@ -48,9 +43,7 @@ class VkService
         "education", "online", "counters"
     );
 
-    /**
-     * @var ContainerInterface
-     */
+    /** @var ContainerInterface */
     private $container;
 
     /** @var \Symfony\Bundle\FrameworkBundle\Routing\Router */
@@ -64,8 +57,16 @@ class VkService
      */
     public function __construct()
     {
-        $this->client = new GuzzleClient(self::VK_API_URL);
+        parent::__construct();
         $this->hydrator = new Hydrator($this);
+    }
+
+    /**
+     * @return string
+     */
+    protected function getApiUrl()
+    {
+        return "https://api.vk.com/method/";
     }
 
     /**
@@ -183,8 +184,10 @@ class VkService
      */
     public function wallGet($ownerId, $count = 200, $offset = 0, $filter = "all")
     {
+        $user = $this->userGet($ownerId);
+
         $context = array(
-            "owner_id" => $ownerId,
+            "owner_id" => $user->getId(),
             "count" => $count,
             "offset" => $offset,
             "filter" => $filter,
@@ -227,28 +230,24 @@ class VkService
      * @param $context
      * @return \Guzzle\Http\Message\RequestInterface
      */
-    private function prepareRequest($method, $context)
+    protected function prepareRequest($method, $context = array())
     {
         if (!isset($_COOKIE[self::VK_TOKEN_COOKIE])) {
-            $this->runTokenReceiving();
+            $this->sendCodeRequest();
         }
 
-        $request = $this->client->get($method);
         $context = array_merge($context, array(
             "access_token" => $_COOKIE[self::VK_TOKEN_COOKIE]
         ));
-        $query = $request->getQuery();
-        foreach ($context as $key => $value) {
-            $query->set($key, $value);
-        }
-        return $request;
+
+        return parent::prepareRequest($method, $context);
     }
 
     /**
      * @param string $data
      * @return array
      */
-    private function prepareResponse($data)
+    protected function prepareResponse($data)
     {
 //        echo "<pre>";
 //        print_r($data);
@@ -311,13 +310,13 @@ class VkService
      * Method send request to VK API for getting code which need for getting token
      * Метод для отправки запроса в ВК API для получения кода, который потребуется для получения токена
      */
-    protected function runTokenReceiving()
+    protected function sendCodeRequest()
     {
-        $clientId = $this->container->getParameter("gfb_social_client.vk.client_id");
-        $scope = $this->container->getParameter("gfb_social_client.vk.scope");
+        $clientId = $this->container->getParameter("gfb_social_client.vkontakte.client_id");
+        $scope = $this->container->getParameter("gfb_social_client.vkontakte.scope");
         $host = $this->request->getHost();
-        $catchCodeUri = $this->router->generate("gfb_social_client_vk_catch_code");
-        $apiVer = $this->container->getParameter("gfb_social_client.vk.api_version");
+        $catchCodeUri = $this->router->generate("gfb_social_client_vkontakte_code");
+        $apiVer = $this->container->getParameter("gfb_social_client.vkontakte.api_version");
 
         $state = $this->request->getRequestUri();
 
@@ -336,10 +335,10 @@ class VkService
      */
     public function getTokenByCodeAndSaveToCookies($code)
     {
-        $clientId = $this->container->getParameter("gfb_social_client.vk.client_id");
-        $clientSecret = $this->container->getParameter("gfb_social_client.vk.client_secret");
+        $clientId = $this->container->getParameter("gfb_social_client.vkontakte.client_id");
+        $clientSecret = $this->container->getParameter("gfb_social_client.vkontakte.client_secret");
         $host = $this->request->getHost();
-        $redirect = $this->router->generate("gfb_social_client_vk_catch_code");
+        $redirect = $this->router->generate("gfb_social_client_vkontakte_code");
 
         $getCodeUrl = self::VK_ACCESS_TOKEN_URL
             . "?client_id={$clientId}&client_secret={$clientSecret}&"

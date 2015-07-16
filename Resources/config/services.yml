@@ -11,3 +11,12 @@ services:
     fb_client:
         class: GFB\SocialClientBundle\Service\FbService
         arguments: ~
+
+    ig_client:
+        class: GFB\SocialClientBundle\Service\InstagramService
+        arguments: ~
+        calls:
+          - [setContainer, [@service_container]]
+          - [setRouter, [@router]]
+          - [setRequest, [@request]]
+        scope: request

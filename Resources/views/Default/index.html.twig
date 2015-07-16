@@ -1,8 +1,35 @@
 {% extends '::base.html.twig' %}
 
 {% block content %}
-    Homepage.
+    <h2>Social client bundle DEMO</h2>
 
+    <h3>Instagram - search medias by tag:</h3>
+    <form>
+        <input name="ig_tag" placeholder="Введите тег"
+               value="{{ app.request.get("ig_tag") }}"/>
+        <button type="submit">Feuer!</button>
+    </form>
+
+    {% if mediaList is defined %}
+        <ol>
+            {% for media in mediaList %}
+                <li>
+                    <div>{{ media.id }}</div>
+                    <img src="{{ media.source }}" width="240"/>
+                </li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
+    <hr/>
+
+    <h3>Vkontakte - show posts from user's wall:</h3>
+    <form>
+        <div>199177108</div>
+        <input name="vk_user_id" placeholder="Введите ID пользователя"
+               value="{{ app.request.get("vk_user_id") }}"/>
+        <button type="submit">Feuer!</button>
+    </form>
     <ul>
         {% for post in posts %}
             <li>
@@ -25,6 +52,15 @@
         {% endfor %}
     </ul>
 
+    <hr/>
+
+    <h3>Vkontakte - show group members:</h3>
+    <form>
+        <div>199177108</div>
+        <input name="vk_group_id" placeholder="Введите ID группы"
+               value="{{ app.request.get("vk_group_id") }}"/>
+        <button type="submit">Feuer!</button>
+    </form>
     <ul>
         {% for vkUser in vkUsers %}
             <li>
@@ -40,4 +76,5 @@
             </li>
         {% endfor %}
     </ul>
+
 {% endblock %}
