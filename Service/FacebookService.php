@@ -9,6 +9,6 @@
 namespace GFB\SocialClientBundle\Service;
 
 
-class FbService {
+class FacebookService {
 
 }

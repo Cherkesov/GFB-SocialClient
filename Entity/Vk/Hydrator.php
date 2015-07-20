@@ -9,11 +9,11 @@
 namespace GFB\SocialClientBundle\Entity\Vk;
 
 
-use GFB\SocialClientBundle\Service\VkService;
+use GFB\SocialClientBundle\Service\VkontakteService;
 
 class Hydrator
 {
-    /** @var VkService */
+    /** @var VkontakteService */
     private $vkService;
 
     /**

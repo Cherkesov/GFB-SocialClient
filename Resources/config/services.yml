@@ -1,6 +1,6 @@
 services:
     vk_client:
-        class: GFB\SocialClientBundle\Service\VkService
+        class: GFB\SocialClientBundle\Service\VkontakteService
         arguments: ~
         calls:
           - [setContainer, [@service_container]]
@@ -9,7 +9,7 @@ services:
         scope: request
 
     fb_client:
-        class: GFB\SocialClientBundle\Service\FbService
+        class: GFB\SocialClientBundle\Service\FacebookService
         arguments: ~
 
     ig_client:

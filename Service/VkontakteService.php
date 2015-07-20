@@ -14,12 +14,10 @@ use GFB\SocialClientBundle\Entity\Vk\Post;
 use GFB\SocialClientBundle\Entity\Vk\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class VkService extends AbstractRestClient
+class VkontakteService extends AbstractRestClient
 {
     const VK_AUTHORIZE_URL = "https://oauth.vk.com/authorize";
     const VK_ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
-    /** @var Hydrator */
-    protected $hydrator;
 
     const VK_TOKEN_COOKIE = "vk_token";
 
@@ -52,6 +50,9 @@ class VkService extends AbstractRestClient
     /** @var \Symfony\Component\HttpFoundation\Request */
     private $request;
 
+    /** @var Hydrator */
+    protected $hydrator;
+
     /**
      * Default constructor
      */
@@ -75,10 +76,10 @@ class VkService extends AbstractRestClient
      */
     public function usersGet($usersIdsArr = array())
     {
-        $context = [
+        $context = array(
             "uids" => implode(",", $usersIdsArr),
             "fields" => implode(",", $this->userFieldsArr),
-        ];
+        );
         $response = $this->prepareRequest(self::METHOD_USERS_GET, $context)->send();
         $data = $this->prepareResponse($response->getBody());
         return $this->hydrator->getUsers($data);
@@ -235,7 +236,6 @@ class VkService extends AbstractRestClient
             "count" => $count,
         );
         $response = parent::prepareRequest(self::METHOD_NEWSFEED_SEARCH, $context)->send();
-//        $response = $this->prepareRequest(self::METHOD_WALL_POST, $context)->send();
         $data = $this->prepareResponse($response->getBody());
         $posts = $this->hydrator->getPosts($data["items"]);
         return $posts;
