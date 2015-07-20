@@ -95,4 +95,12 @@ class Media
         $this->link = $link;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return "{$this->id} [{$this->link}]";
+    }
 }
