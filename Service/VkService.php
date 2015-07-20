@@ -234,7 +234,7 @@ class VkService extends AbstractRestClient
             "offset" => $offset,
             "count" => $count,
         );
-        $response = parent::prepareRequest(self::METHOD_NEWSFEED_SEARCH, $context);
+        $response = parent::prepareRequest(self::METHOD_NEWSFEED_SEARCH, $context)->send();
 //        $response = $this->prepareRequest(self::METHOD_WALL_POST, $context)->send();
         $data = $this->prepareResponse($response->getBody());
         $posts = $this->hydrator->getPosts($data["items"]);
