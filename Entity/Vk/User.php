@@ -436,8 +436,6 @@ class User
      */
     public function __toString()
     {
-        return (string)$this->getFirstName() . ' '
-        . $this->getLastName()
-        . ' ['. $this->getNickName() . ']';
+        return "{$this->getLastName()} {$this->getFirstName()} [{$this->getNickName()}]";
     }
 }

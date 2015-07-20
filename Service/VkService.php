@@ -18,7 +18,6 @@ class VkService extends AbstractRestClient
 {
     const VK_AUTHORIZE_URL = "https://oauth.vk.com/authorize";
     const VK_ACCESS_TOKEN_URL = "https://oauth.vk.com/access_token";
-
     /** @var Hydrator */
     protected $hydrator;
 
@@ -32,6 +31,7 @@ class VkService extends AbstractRestClient
     const METHOD_GROUPS_GET_MEMBERS = "groups.getMembers";
     const METHOD_WALL_GET = "wall.get";
     const METHOD_WALL_POST = "wall.post";
+    const METHOD_NEWSFEED_SEARCH = "newsfeed.search";
 
     private $userFieldsArr = array(
         "uid",
@@ -196,11 +196,6 @@ class VkService extends AbstractRestClient
         $data = $this->prepareResponse($response->getBody());
         array_shift($data);
 
-//        echo "<pre>";
-//        print_r($data);
-//        echo "</pre>";
-//        die;
-
         $posts = $this->hydrator->getPosts($data);
         return $posts;
     }
@@ -223,6 +218,36 @@ class VkService extends AbstractRestClient
         $data = $this->prepareResponse($response->getBody());
         $posts = $this->hydrator->getPosts($data);
         return $posts;
+    }
+
+    /**
+     * Поиск новостей
+     * @param string $query
+     * @param int $offset
+     * @param int $count
+     * @return \GFB\SocialClientBundle\Entity\Vk\Post[]
+     */
+    public function newsFeedSearch($query = "", $offset = 0, $count = 200)
+    {
+        $context = array(
+            "q" => $query,
+            "offset" => $offset,
+            "count" => $count,
+        );
+        $response = parent::prepareRequest(self::METHOD_NEWSFEED_SEARCH, $context);
+//        $response = $this->prepareRequest(self::METHOD_WALL_POST, $context)->send();
+        $data = $this->prepareResponse($response->getBody());
+        $posts = $this->hydrator->getPosts($data["items"]);
+        return $posts;
+    }
+
+    /**
+     * @param string $tag
+     * @return \GFB\SocialClientBundle\Entity\Vk\Post[]
+     */
+    public function newsFeedSearchByTag($tag)
+    {
+        return $this->newsFeedSearch("#{$tag}");
     }
 
     /**

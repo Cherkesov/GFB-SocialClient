@@ -307,4 +307,13 @@ class Post
         $this->copyText = $copyText;
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        $attCount = count($this->attachments);
+        return "Id:{$this->id} Owner:{$this->owner} Attachments:{$attCount}";
+    }
 }
