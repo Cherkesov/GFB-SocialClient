@@ -14,11 +14,6 @@ class DefaultController extends Controller
         $vkontakte = $this->get("vk_client");
         $instagram = $this->get("ig_client");
 
-//        $data = $vk->usersGet(['nkmelanj', 'stemmuel', 'will_grymm', 'holodnyi_veter', 'dandrumkiller']);
-//        $data = $vk->friendsGet('199177108');
-//        $groupMembers = $vk->groupsGetMembers('anastacia_koptiaeva');
-//        $data = $vk->usersSearch('Строгин Артем');
-
         $mediaList = array();
         $igTag = $request->query->get("ig_tag");
         if (!empty($igTag)) {
