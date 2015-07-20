@@ -76,6 +76,8 @@ class Hydrator
     {
         $posts = array();
         foreach ($arr as $row) {
+            if (!isset($row["id"])) continue;
+
             $posts[] = $this->getPost($row);
         }
         return $posts;

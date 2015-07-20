@@ -238,15 +238,7 @@ class VkontakteService extends AbstractRestClient
         $response = parent::prepareRequest(self::METHOD_NEWSFEED_SEARCH, $context)->send();
         $data = $this->prepareResponse($response->getBody());
 
-        if (!isset($data["items"])) {
-            echo "<pre>";
-            print_r($data);
-            echo "</pre>";
-            die;
-        }
-
-        $posts = $data["items"];
-        $posts = $this->hydrator->getPosts($posts);
+        $posts = $this->hydrator->getPosts($data);
         return $posts;
     }
 
