@@ -239,7 +239,9 @@ class VkontakteService extends AbstractRestClient
         $data = $this->prepareResponse($response->getBody());
 
         if (!isset($data["items"])) {
+            echo "<pre>";
             print_r($data);
+            echo "</pre>";
             die;
         }
 
