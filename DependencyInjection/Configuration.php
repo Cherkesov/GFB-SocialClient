@@ -18,30 +18,32 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('gfb_social_client');
+        $rootNode = $treeBuilder->root("gfb_social_client");
 
         $rootNode
             ->children()
-                ->arrayNode('vkontakte')
+                ->arrayNode("vkontakte")
                 ->children()
-                    ->integerNode('client_id')->end()
-                    ->scalarNode('client_secret')->end()
-                    ->scalarNode('scope')->end()
-                    ->scalarNode('api_version')->end()
+                    ->scalarNode("client_id")->end()
+                    ->scalarNode("client_secret")->end()
+                    ->scalarNode("scope")->end()
+                    ->scalarNode("api_version")->end()
                 ->end()
                 ->end()
                 //
-                ->arrayNode('facebook')
+                ->arrayNode("facebook")
                 ->children()
-                    ->scalarNode('app_id')->end()
-                    ->scalarNode('app_secret')->end()
+                    ->scalarNode("app_id")->end()
+                    ->scalarNode("app_secret")->end()
+                    ->scalarNode("version")->end()
+                    ->scalarNode("permissions")->end()
                 ->end()
                 ->end()
                 //
-                ->arrayNode('instagram')
+                ->arrayNode("instagram")
                 ->children()
-                    ->scalarNode('client_id')->end()
-                    ->scalarNode('client_secret')->end()
+                    ->scalarNode("client_id")->end()
+                    ->scalarNode("client_secret")->end()
                 ->end()
                 ->end()
             ->end();

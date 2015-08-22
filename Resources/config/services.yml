@@ -3,20 +3,15 @@ services:
         class: GFB\SocialClientBundle\Service\VkontakteService
         arguments: ~
         calls:
-          - [setContainer, [@service_container]]
-          - [setRouter, [@router]]
-          - [setRequest, [@request]]
-        scope: request
 
     fb_client:
         class: GFB\SocialClientBundle\Service\FacebookService
         arguments: ~
+        calls:
+          - [setContainer, [@service_container]]
 
     ig_client:
         class: GFB\SocialClientBundle\Service\InstagramService
         arguments: ~
         calls:
           - [setContainer, [@service_container]]
-          - [setRouter, [@router]]
-          - [setRequest, [@request]]
-        scope: request

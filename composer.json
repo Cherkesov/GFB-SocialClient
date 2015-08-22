@@ -15,7 +15,8 @@
     "MIT"
   ],
   "require": {
-    "misd/guzzle-bundle": "1.1.5"
+    "misd/guzzle-bundle": "1.1.5",
+    "facebook/php-sdk-v4": "~5.0"
   },
   "autoload": {
     "psr-0": {

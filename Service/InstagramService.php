@@ -19,19 +19,9 @@ class InstagramService extends AbstractRestClient
 {
     const INSTAGRAM_API_AUTHORIZE = "https://api.instagram.com/oauth/authorize/";
     const INSTAGRAM_API_ACCESS_TOKEN = "https://api.instagram.com/oauth/access_token";
-    const IG_TOKEN_COOKIE = "ig_token";
 
     /** @var ContainerInterface */
     private $container;
-
-    /** @var \Symfony\Bundle\FrameworkBundle\Routing\Router */
-    private $router;
-
-    /** @var \Symfony\Component\HttpFoundation\Request */
-    private $request;
-
-    /** @var Hydrator */
-    private $hydrator;
 
     /**
      * Default constructor
@@ -57,14 +47,10 @@ class InstagramService extends AbstractRestClient
      */
     protected function prepareRequest($method, $context = array())
     {
-        if (!isset($_COOKIE[self::IG_TOKEN_COOKIE])) {
-            $this->sendCodeRequest();
-        }
-
-        $context = array_merge($context, array(
-            "access_token" => $_COOKIE[self::IG_TOKEN_COOKIE]
-        ));
-
+        $context["client_id"] = $this->container
+            ->getParameter("gfb_social_client.instagram.client_id");
+        $context["client_secret"] = $this->container
+            ->getParameter("gfb_social_client.instagram.client_secret");
         return parent::prepareRequest($method, $context);
     }
 
@@ -78,6 +64,32 @@ class InstagramService extends AbstractRestClient
     }
 
     /**
+     * @param int $userId
+     * @return \GFB\SocialClientBundle\Entity\Instagram\User
+     */
+    public function getUserInfo($userId)
+    {
+        $method = "/v1/users/{$userId}/";
+        $response = $this->prepareRequest($method, array(
+            "count" => 1000,
+        ))->send();
+        $data = $this->prepareResponse($response->getBody());
+        $user = $this->hydrator->getUserInfo($data);
+        return $user;
+    }
+
+    public function getUserMediaRecent($userId)
+    {
+        $method = "/v1/users/{$userId}/media/recent/";
+        $response = $this->prepareRequest($method, array(
+            "count" => 1000,
+        ))->send();
+        $data = $this->prepareResponse($response->getBody());
+        $media = $this->hydrator->getMediaList($data);
+        return $media;
+    }
+
+    /**
      * @param string $tagName
      * @return \GFB\SocialClientBundle\Entity\Instagram\Media[]
      */
@@ -88,14 +100,54 @@ class InstagramService extends AbstractRestClient
             "count" => 1000,
         ))->send();
         $data = $this->prepareResponse($response->getBody());
-        $media = $this->hydrator->getMediaList($data);
+        $mediaList = $this->hydrator->getMediaList($data);
+        return $mediaList;
+    }
+
+    /**
+     * @param string $id
+     * @return \GFB\SocialClientBundle\Entity\Instagram\Media
+     */
+    public function getMediaById($id)
+    {
+        $method = "/v1/media/{$id}";
+        try {
+            $response = $this->prepareRequest($method, array())->send();
+        } catch(\Exception $ex) {
+            return null;
+        }
+        $data = $this->prepareResponse($response->getBody());
+        $media = $this->hydrator->getMedia($data);
         return $media;
     }
 
     /**
+     * @param string $query
+     * @return \GFB\SocialClientBundle\Entity\Instagram\User[]
+     */
+    public function search($query)
+    {
+        $method = "/v1/users/search?q={$query}";
+        $response = $this->prepareRequest($method, array(
+            "count" => 1000,
+        ))->send();
+        $data = $this->prepareResponse($response->getBody());
+        $results = $this->hydrator->getSearchResults($data);
+        return $results;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     */
+    public function setContainer($container)
+    {
+        $this->container = $container;
+    }
+
+    /* *
      *
      */
-    protected function sendCodeRequest()
+    /*protected function sendCodeRequest()
     {
         $clientId = $this->container->getParameter("gfb_social_client.instagram.client_id");
         $redirect = $this->getRedirectUrl();
@@ -108,12 +160,12 @@ class InstagramService extends AbstractRestClient
             . "state={$state}";
         header("Location: {$url}");
         exit;
-    }
+    }*/
 
-    /**
+    /* *
      * @param string $code
      */
-    public function getTokenByCodeAndSaveToCookies($code)
+    /*public function getTokenByCodeAndSaveToCookies($code)
     {
         $clientId = $this->container->getParameter("gfb_social_client.instagram.client_id");
         $clientSecret = $this->container->getParameter("gfb_social_client.instagram.client_secret");
@@ -148,64 +200,5 @@ class InstagramService extends AbstractRestClient
             print_r($data);
             die;
         }
-    }
-
-    /**
-     * @return ContainerInterface
-     */
-    public function getContainer()
-    {
-        return $this->container;
-    }
-
-    /**
-     * @param ContainerInterface $container
-     */
-    public function setContainer($container)
-    {
-        $this->container = $container;
-    }
-
-    /**
-     * @return \Symfony\Component\HttpFoundation\Request
-     */
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    /**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-     */
-    public function setRequest($request)
-    {
-        $this->request = $request;
-    }
-
-    /**
-     * @return \Symfony\Bundle\FrameworkBundle\Routing\Router
-     */
-    public function getRouter()
-    {
-        return $this->router;
-    }
-
-    /**
-     * @param \Symfony\Bundle\FrameworkBundle\Routing\Router $router
-     */
-    public function setRouter($router)
-    {
-        $this->router = $router;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getRedirectUrl()
-    {
-        $host = $this->request->getHost();
-        $catchCodeUri = $this->router->generate("gfb_social_client_instagram_code");
-        $redirect = "http://" . $host . $catchCodeUri;
-        return $redirect;
-    }
+    }*/
 }

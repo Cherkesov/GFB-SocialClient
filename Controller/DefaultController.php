@@ -13,6 +13,17 @@ class DefaultController extends Controller
     {
         $vkontakte = $this->get("vk_client");
         $instagram = $this->get("ig_client");
+        $facebook = $this->get("fb_client");
+
+//        $friends = $facebook->getUser();
+        /*$friends = $facebook->getFriend();
+        echo "<pre>";
+        print_r($friends);
+        echo "</pre>";
+        die;*/
+
+//        $facebook->sendMessage();
+//        die;
 
         $mediaList = array();
         $igTag = $request->query->get("ig_tag");
@@ -20,10 +31,16 @@ class DefaultController extends Controller
             $mediaList = $instagram->getMediaListByTag($igTag);
         }
 
-        $posts = array();
+        $userWallPosts = array();
         $vkUserId = $request->query->get("vk_user_id");
         if (!empty($vkUserId)) {
-            $posts = $vkontakte->wallGet($vkUserId);
+            $userWallPosts = $vkontakte->wallGet($vkUserId);
+        }
+
+        $tagPosts = array();
+        $vkTag = $request->query->get("vk_tag");
+        if (!empty($vkTag)) {
+            $tagPosts = $vkontakte->newsFeedSearchByTag($vkTag);
         }
 
         $groupMembers = array();
@@ -36,7 +53,8 @@ class DefaultController extends Controller
             "GFBSocialClientBundle:Default:index.html.twig",
             array(
                 "vkUsers" => $groupMembers,
-                "posts" => $posts,
+                "userWallPosts" => $userWallPosts,
+                "tagPosts" => $tagPosts,
                 "mediaList" => $mediaList,
             )
         );

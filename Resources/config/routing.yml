@@ -2,10 +2,18 @@ gfb_social_client_index:
     path:     /demo
     defaults: { _controller: GFBSocialClientBundle:Default:index }
 
-gfb_social_client_vkontakte_code:
-    path:     /vkontakte/code
-    defaults: { _controller: GFBSocialClientBundle:Social:vkontakteCode }
+#gfb_social_client_vkontakte_code:
+#    path:     /vkontakte/code
+#    defaults: { _controller: GFBSocialClientBundle:Social:vkontakteCode }
 
-gfb_social_client_instagram_code:
-    path:     /instagram/code
-    defaults: { _controller: GFBSocialClientBundle:Social:instagramCode }
+#gfb_social_client_instagram_code:
+#    path:     /instagram/code
+#    defaults: { _controller: GFBSocialClientBundle:Social:instagramCode }
+
+gfb_social_client_facebook_login:
+    path:     /facebook/login
+    defaults: { _controller: GFBSocialClientBundle:Social:facebookLogin }
+
+gfb_social_client_facebook_code:
+    path:     /facebook/code
+    defaults: { _controller: GFBSocialClientBundle:Social:facebookCode }

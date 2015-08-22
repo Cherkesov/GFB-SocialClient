@@ -17,6 +17,15 @@ class Media
     /** @var int */
     private $id;
 
+    /** @var string */
+    private $captionText;
+
+    /** @var User */
+    private $user;
+
+    /** @var array */
+    private $tags = array();
+
     /** @var int */
     private $type;
 
@@ -25,6 +34,9 @@ class Media
 
     /** @var string */
     private $link;
+
+    /** @var array */
+    private $comments = array();
 
     /**
      * @return int
@@ -41,6 +53,70 @@ class Media
     public function setId($id)
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCaptionText()
+    {
+        return $this->captionText;
+    }
+
+    /**
+     * @param string $captionText
+     * @return $this
+     */
+    public function setCaptionText($captionText)
+    {
+        $this->captionText = $captionText;
+        return $this;
+    }
+
+    /**
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User $user
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param array $tags
+     * @return $this
+     */
+    public function setTags($tags)
+    {
+        $this->tags = $tags;
+        return $this;
+    }
+
+    /**
+     * @param string $tag
+     * @return $this
+     */
+    public function addTag($tag)
+    {
+        $this->tags[] = $tag;
         return $this;
     }
 
@@ -93,6 +169,34 @@ class Media
     public function setLink($link)
     {
         $this->link = $link;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @param array $comments
+     * @return $this
+     */
+    public function setComments($comments)
+    {
+        $this->comments = $comments;
+        return $this;
+    }
+
+    /**
+     * @param Comment $comment
+     * @return $this
+     */
+    public function addComment($comment)
+    {
+        $this->comments[] = $comment;
         return $this;
     }
 

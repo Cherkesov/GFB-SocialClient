@@ -31,7 +31,7 @@
         <button type="submit">Feuer!</button>
     </form>
     <ul>
-        {% for post in posts %}
+        {% for post in userWallPosts %}
             <li>
                 <div>Владелец: <b>{{ post.owner }}</b></div>
                 <div>Автор: <b>{{ post.author }}</b></div>
@@ -45,7 +45,34 @@
 
                 <ul>
                     {% for attachment in post.attachments if attachment != null %}
-                        <li>{{ attachment.toRichText()|raw }}</li>
+                        <li>{{ attachment.richText|raw }}</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <hr/>
+
+    <h3>Vkontakte - show posts by tag:</h3>
+    <form>
+        <div>Hello</div>
+        <input name="vk_tag" placeholder="Введите тег"
+               value="{{ app.request.get("vk_tag") }}"/>
+        <button type="submit">Feuer!</button>
+    </form>
+    <ul>
+        {% for post in tagPosts %}
+            <li>
+                <div>Владелец: <b>{{ post.owner }}</b></div>
+                <div>Автор: <b>{{ post.author }}</b></div>
+                <div>Дата: <b>{{ post.createdAt|date('Y-m-d H:i') }}</b></div>
+                <div>Собрала лайков: <b>{{ post.likesCount }}</b></div>
+                {{ post.text|raw }}
+
+                <ul>
+                    {% for attachment in post.attachments if attachment != null %}
+                        <li>{{ attachment.richText|raw }}</li>
                     {% endfor %}
                 </ul>
             </li>

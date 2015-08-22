@@ -28,7 +28,7 @@ abstract class AbstractRestClient
      * @param array $context
      * @return \Guzzle\Http\Message\RequestInterface
      */
-    protected function prepareRequest($method, $context = arr)
+    protected function prepareRequest($method, $context = array())
     {
         $request = $this->client->get($method);
         $query = $request->getQuery();
