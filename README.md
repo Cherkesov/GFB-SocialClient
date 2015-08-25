@@ -11,24 +11,25 @@ Bundle for Symfony2
 
 - Add to composer.json next rows
 	
-	"repositories": [
-	  ....
-      {
-        "type": "vcs",
-        "url": "https://github.com/Cherkesov/GFB-SocialClient.git"
-      }
-	  ....
+	<br/>"repositories": [<br/>
+	  ....<br/>
+      **{<br/>
+        "type": "vcs",<br/>
+        "url": "https://github.com/Cherkesov/GFB-SocialClient.git"<br/>
+      }** <br/>
+	  ....<br/>
     ]
     
-    and
+    <br/>and
     
-    "gfb/social-client-bundle": "dev-master",
+    <br/> **"gfb/social-client-bundle": "dev-master",** <br/><br/>
     
 - Run **composer update**
 
 #### Usage
 
 In controller/command call services
+
 - **vk_client** (Vkontakte)
 - **fb_client** (Facebook)
 - **ig_client** (Instagram)
